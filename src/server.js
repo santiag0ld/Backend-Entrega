@@ -1,15 +1,19 @@
 const express = require("express");
+const appRouter = require('./routes');
+const { connectDb } = require("./config/config");
+
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-const productRouter = require('./routes/products.router.js')
-const cartRouter = require('./routes/carts.router.js')
+const PORT = 8080;
 
+connectDb()
+app.use(express.json)
+app.use(express.urlencoded({extended: true}))
 
-app.use('/api/products',productRouter);
-app.use('/api/carts', cartRouter);
+app.use(appRouter)
 
-
-app.listen(8080, () => {
-    console.log('Escuchando en el puerto 8080');
+app.listen(PORT, err => {
+    if(err){
+        console.log(err)
+    }
+    console.log(`Escuchando en el puerto: ${PORT}`);
 });
